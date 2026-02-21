@@ -51,6 +51,8 @@ springdoc:
   override-with-generic-response: false
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: ${EUREKA_DEFAULTZONE:http://localhost:8761/eureka/}

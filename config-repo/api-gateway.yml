@@ -11,67 +11,69 @@ spring:
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
 
-      # Optional but helpful for Swagger UI and browser calls
-      globalcors:
-        add-to-simple-url-handler-mapping: true
-        corsConfigurations:
-          "[/**]":
-            allowedOrigins: "*"
-            allowedMethods: "*"
-            allowedHeaders: "*"
-            exposedHeaders: "Authorization,Link,X-Total-Count"
-            allowCredentials: false
-            maxAge: 3600
+          # Optional but helpful for Swagger UI and browser calls
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            corsConfigurations:
+              "[/**]":
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+                exposedHeaders: "Authorization,Link,X-Total-Count"
+                allowCredentials: false
+                maxAge: 3600
 
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
-      routes:
-        # ---------------------------
-        # Professionals (Business APIs)
-        # ---------------------------
-        - id: professionals-native
-          uri: lb://PROFESSIONALS-SERVICE
-          predicates:
-            - Path=/api/v1/**
+          routes:
+            # ---------------------------
+            # Professionals (Business APIs)
+            # ---------------------------
+            - id: professionals-native
+              uri: lb://PROFESSIONALS-SERVICE
+              predicates:
+                - Path=/api/v1/**
 
-        - id: professionals
-          uri: lb://PROFESSIONALS-SERVICE
-          predicates:
-            - Path=/api/professionals/**
-          filters:
-            # /api/professionals/** -> /api/**
-            - RewritePath=/api/professionals/(?<segment>.*),/api/${segment}
+            - id: professionals
+              uri: lb://PROFESSIONALS-SERVICE
+              predicates:
+                - Path=/api/professionals/**
+              filters:
+                # /api/professionals/** -> /api/**
+                - RewritePath=/api/professionals/(?<segment>.*),/api/${segment}
 
-        # ---------------------------
-        # Booking (Business APIs)
-        # ---------------------------
-        - id: booking
-          uri: lb://BOOKING-SERVICE
-          predicates:
-            - Path=/api/bookings/**,/api/availability/**
+            # ---------------------------
+            # Booking (Business APIs)
+            # ---------------------------
+            - id: booking
+              uri: lb://BOOKING-SERVICE
+              predicates:
+                - Path=/api/bookings/**,/api/availability/**
 
-        # ---------------------------
-        # OpenAPI routes (Swagger docs)
-        # ---------------------------
-        - id: professionals-openapi
-          uri: lb://PROFESSIONALS-SERVICE
-          predicates:
-            - Path=/professionals/v3/api-docs,/professionals/v3/api-docs/**
-          filters:
-            - StripPrefix=1
+            # ---------------------------
+            # OpenAPI routes (Swagger docs)
+            # ---------------------------
+            - id: professionals-openapi
+              uri: lb://PROFESSIONALS-SERVICE
+              predicates:
+                - Path=/professionals/v3/api-docs,/professionals/v3/api-docs/**
+              filters:
+                - StripPrefix=1
 
-        - id: booking-openapi
-          uri: lb://BOOKING-SERVICE
-          predicates:
-            - Path=/booking/v3/api-docs,/booking/v3/api-docs/**
-          filters:
-            - StripPrefix=1
+            - id: booking-openapi
+              uri: lb://BOOKING-SERVICE
+              predicates:
+                - Path=/booking/v3/api-docs,/booking/v3/api-docs/**
+              filters:
+                - StripPrefix=1
 
 # Gateway Swagger UI (aggregated)
 springdoc:
@@ -93,3 +95,17 @@ management:
   endpoint:
     health:
       show-details: always
+    # In your version, `access` and `enabled` are mutually exclusive.
+    # Keep ONLY `access` to allow reading routes at /actuator/gateway/routes
+    gateway:
+      access: read-only
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULTZONE:http://localhost:8761/eureka/}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    reactor.netty.http.client: INFO
