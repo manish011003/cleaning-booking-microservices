@@ -1,0 +1,76 @@
+server:
+  port: 8081
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: professionals-service
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/professionals}
+    username: ${SPRING_DATASOURCE_USERNAME:justlife}
+    password: ${SPRING_DATASOURCE_PASSWORD:justlife}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Fresh local databases may be empty. "validate" fails fast with:
+      #   Schema validation: missing table [cleaner]
+      # Using "update" keeps the service runnable, while Flyway and/or JPA
+      # ensures required tables exist.
+      ddl-auto: update
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: professionals-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+justlife:
+  kafka:
+    enabled: true
+    topics:
+      booking-events: booking.events
+      booking-events-dlt: booking.events.dlt
+
+# SWAGGER
+springdoc:
+  api-docs:
+    enabled: true
+  show-actuator: true
+  override-with-generic-response: false
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULTZONE:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
