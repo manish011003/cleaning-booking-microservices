@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-public class CustomPaging implements Serializable {
+public class CustomPaging {
 
     @Min(value = 1, message = "Page number must be bigger than 0")
     private Integer pageNumber;

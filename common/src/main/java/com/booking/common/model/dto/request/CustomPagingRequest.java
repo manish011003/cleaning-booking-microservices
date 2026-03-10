@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class CustomPagingRequest implements Serializable {
+public class CustomPagingRequest {
 
     @NotNull
     @Valid

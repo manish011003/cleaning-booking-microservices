@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Builder
-public class CustomResponse<T> implements Serializable {
+public class CustomResponse<T> {
 
     @Builder.Default
     private LocalDateTime time = LocalDateTime.now();

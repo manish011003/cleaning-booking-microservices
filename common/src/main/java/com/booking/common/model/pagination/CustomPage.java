@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomPage<T> implements Serializable {
+public class CustomPage<T> {
 
     private List<T> content;
 

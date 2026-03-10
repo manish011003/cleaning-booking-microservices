@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-public class CustomSorting implements Serializable {
+public class CustomSorting {
 
     private String sortBy;         // Optional: e.g., "createdAt", "eventId", etc.
     private String sortDirection; // Optional: "ASC" or "DESC"

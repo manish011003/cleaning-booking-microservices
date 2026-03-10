@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Getter
 @Builder
-public class CustomPagingResponse<T> implements Serializable {
+public class CustomPagingResponse<T> {
 
     private List<T> content;
 
