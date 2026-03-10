@@ -88,6 +88,19 @@ springdoc:
         url: /booking/v3/api-docs
 
 management:
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      enabled: true
+      zipkin:
+        enabled: true
+        endpoint: http://localhost:9411/api/v2/spans
+  observations:
+    http:
+      client:
+        requests:
+          name: gateway.outbound.requests
   endpoints:
     web:
       exposure:
@@ -95,8 +108,6 @@ management:
   endpoint:
     health:
       show-details: always
-    # In your version, `access` and `enabled` are mutually exclusive.
-    # Keep ONLY `access` to allow reading routes at /actuator/gateway/routes
     gateway:
       access: read-only
 
