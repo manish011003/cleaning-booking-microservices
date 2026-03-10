@@ -54,13 +54,13 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (application) (rate(http_server_requests_seconds_count{application=~\".+\"}[1m]))",
-          "legendFormat": "{{application}}",
+          "expr": "sum by (job) (rate(http_server_requests_seconds_count{job=~\"${service:regex}\"}[1m]))",
+          "legendFormat": "{{job}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "HTTP requests / sec (by application)",
+      "title": "HTTP requests / sec (by service)",
       "type": "timeseries"
     },
     {
@@ -96,8 +96,8 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (application) (jvm_memory_used_bytes{application=~\".+\", area=\"heap\"})",
-          "legendFormat": "{{application}}",
+          "expr": "sum by (job) (jvm_memory_used_bytes{job=~\"${service:regex}\", area=\"heap\"})",
+          "legendFormat": "{{job}}",
           "range": true,
           "refId": "A"
         }
@@ -138,8 +138,8 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max by (application) (jvm_threads_live_threads{application=~\".+\"})",
-          "legendFormat": "{{application}}",
+          "expr": "max by (job) (jvm_threads_live_threads{job=~\"${service:regex}\"})",
+          "legendFormat": "{{job}}",
           "range": true,
           "refId": "A"
         }
@@ -150,9 +150,43 @@
   ],
   "refresh": "10s",
   "schemaVersion": 39,
-  "tags": ["justlife", "spring", "micrometer"],
+  "tags": [
+    "justlife",
+    "spring",
+    "micrometer"
+  ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Prometheus"
+        },
+        "definition": "label_values(jvm_memory_used_bytes{area=\"heap\"}, job)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(jvm_memory_used_bytes{area=\"heap\"}, job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-15m",
@@ -162,6 +196,6 @@
   "timezone": "browser",
   "title": "Justlife Platform - Spring Boot Metrics",
   "uid": "justlife-spring",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
