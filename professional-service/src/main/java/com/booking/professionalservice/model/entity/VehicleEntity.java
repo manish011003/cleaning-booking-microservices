@@ -1,9 +1,13 @@
 package com.booking.professionalservice.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "vehicle")
+@Getter
+@Setter
 public class VehicleEntity {
 
   @Id
@@ -17,7 +21,7 @@ public class VehicleEntity {
   @Column(name = "license_plate", nullable = false, unique = true)
   private String licensePlate;
 
-  protected VehicleEntity() {}
+  public VehicleEntity() {}
 
   public VehicleEntity(String code, String licensePlate) {
     this.code = code;

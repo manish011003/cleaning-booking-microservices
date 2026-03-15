@@ -1,9 +1,13 @@
 package com.booking.professionalservice.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "cleaner")
+@Getter
+@Setter
 public class CleanerEntity {
 
   @Id
@@ -18,7 +22,7 @@ public class CleanerEntity {
   @JoinColumn(name = "vehicle_id", nullable = false)
   private VehicleEntity vehicle;
 
-  protected CleanerEntity() {}
+  public CleanerEntity() {}
 
   public CleanerEntity(String fullName, VehicleEntity vehicle) {
     this.fullName = fullName;
