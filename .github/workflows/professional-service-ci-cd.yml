@@ -2,7 +2,7 @@ name: CI/CD Pipeline for Professional Service
 
 on:
   workflow_run:
-    workflows: ["CI/CD Pipeline for Discovery Server"]
+    workflows: ["CI/CD Pipeline for Booking Service"]
     branches: ["main"]
     types:
       - completed
@@ -27,8 +27,8 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Run tests
-        run: mvn -B -f professional-service/pom.xml clean verify
+      - name: Run tests with required modules
+        run: mvn -B -pl professional-service -am clean verify
 
   build-and-push:
     name: Build & Push Professional Service Docker Image
@@ -47,8 +47,8 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Package application
-        run: mvn -B -f professional-service/pom.xml clean package -DskipTests
+      - name: Package application with required modules
+        run: mvn -B -pl professional-service -am clean package -DskipTests
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
