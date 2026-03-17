@@ -27,9 +27,6 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Package application
-        run: mvn -B -f professional-service/pom.xml clean package -DskipTests
-
       - name: Run tests
         run: mvn -B -f professional-service/pom.xml clean verify
 
