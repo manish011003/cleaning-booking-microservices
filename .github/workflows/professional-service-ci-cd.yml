@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
+    defaults:
+      run:
+        working-directory: ./professional-service
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -26,9 +30,10 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: professional-service/pom.xml
 
-      - name: Run tests with required modules
-        run: mvn -B -pl professional-service -am clean verify
+      - name: Run tests
+        run: mvn -B clean verify
 
   build-and-push:
     name: Build & Push Professional Service Docker Image
@@ -36,6 +41,10 @@ jobs:
     needs: test
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
+    defaults:
+      run:
+        working-directory: ./professional-service
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -46,9 +55,10 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: professional-service/pom.xml
 
-      - name: Package application with required modules
-        run: mvn -B -pl professional-service -am clean package -DskipTests
+      - name: Package application
+        run: mvn -B clean package -DskipTests
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
