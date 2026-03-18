@@ -71,7 +71,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./booking-service
+          context: .
           file: ./booking-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/cleaning-booking-microservices-booking-service:latest
