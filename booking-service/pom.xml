@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>25</java.version>
 		<spring-cloud.version>2025.1.1</spring-cloud.version>
 		<springdoc.version>3.0.0</springdoc.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
