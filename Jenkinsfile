@@ -86,7 +86,7 @@ pipeline {
             }
             steps {
                 script {
-                    // Runs only for modules that already define sonar properties/plugins.
+                    // Runs only for the modules that already define sonar properties/plugins.
                     runMaven('professional-service', buildGoals('sonar:sonar -DskipTests'))
                     runMaven('booking-service', buildGoals('sonar:sonar -DskipTests'))
                 }
