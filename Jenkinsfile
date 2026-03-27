@@ -31,6 +31,22 @@ pipeline {
             }
         }
 
+        stage('Java Check') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'echo "JAVA_HOME=$JAVA_HOME"'
+                        sh 'java -version'
+                        sh 'mvn -version'
+                    } else {
+                        bat 'echo JAVA_HOME=%JAVA_HOME%'
+                        bat 'java -version'
+                        bat 'mvn -version'
+                    }
+                }
+            }
+        }
+
         stage('Build Shared Module') {
             steps {
                 script {
